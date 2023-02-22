@@ -2,6 +2,7 @@
 # typed: false
 
 require "faraday"
+require "faraday_middleware"
 
 module GscDigitalProducts
   class AuthenticatedHttp

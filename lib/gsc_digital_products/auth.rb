@@ -17,7 +17,7 @@ module GscDigitalProducts
           version: :TLSv1_2
         }
       ) do |f|
-        f.set_basic_auth client_id, client_secret
+        f.basic_auth client_id, client_secret
         f.request :url_encoded
       end
     end
