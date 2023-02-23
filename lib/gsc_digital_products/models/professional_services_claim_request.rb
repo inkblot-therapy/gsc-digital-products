@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 module GscDigitalProducts
-  class EligibilityCheckRequest
+  class ProfessionalServicesClaimRequest
 
     attr_reader :subscriber_identifier,
       :dependant_number,
       :benefit_type_code,
-      :procedure_code,
-      :service_date,
+      :benefit_id,
       :provider_id,
-      :province_code,
-      :claim_amount,
+      :claim_details,
       :payee_type_code,
       :accident_type,
       :has_alternate_coverage,
@@ -20,11 +18,9 @@ module GscDigitalProducts
       subscriber_identifier:,
       dependant_number:,
       benefit_type_code:,
-      procedure_code:,
-      service_date:,
+      benefit_id:,
       provider_id:,
-      province_code:,
-      claim_amount:,
+      claim_details:,
       payee_type_code: PayeeTypeCode::PR,
       accident_type: AccidentType::NONE,
       has_alternate_coverage: false,
@@ -41,27 +37,21 @@ module GscDigitalProducts
       @dependant_number = dependant_number
 
       @benefit_type_code = benefit_type_code
-      @procedure_code = procedure_code
 
-      unless service_date.is_a?(Date)
-        raise ArgumentError, "Invalid service date: #{service_date}"
+      unless benefit_id.is_a?(String)
+        raise ArgumentError, "Invalid benefit id (must be string): #{benefit_id}"
       end
-      @service_date = service_date
+      @benefit_id = benefit_id.to_i
 
       unless provider_id.is_a?(String)
         raise ArgumentError, "Invalid provider id (must be string): #{provider_id}"
       end
       @provider_id = provider_id.to_i
 
-      unless ProvinceCode.constants.to_s.include?(province_code.to_s)
-        raise ArgumentError, "Invalid province code: #{province_code}"
+      unless claim_details.is_a?(Array)
+        raise ArgumentError, "Invalid claim details (must be array): #{claim_details}"
       end
-      @province_code = province_code
-
-      unless claim_amount.is_a?(Numeric) && claim_amount > 0
-        raise ArgumentError, "Invalid claim amount: #{claim_amount}"
-      end
-      @claim_amount = claim_amount
+      @claim_details =  claim_details.collect{ |detail| ProfessionalServicesClaimDetail.new(detail) }
 
       unless PayeeTypeCode.constants.to_s.include?(payee_type_code)
         raise ArgumentError, "Invalid payee type code: #{payee_type_code}"
