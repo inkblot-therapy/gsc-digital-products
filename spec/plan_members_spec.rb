@@ -8,9 +8,7 @@ describe GscDigitalProducts::PlanMembers do
       "client_id_test",
       "client_secret_test"
     )
-
     @http_client = instance_double(GscDigitalProducts::AuthenticatedHttp)
-
     @plan_members = GscDigitalProducts::PlanMembers.new(@http_client)
   end
 

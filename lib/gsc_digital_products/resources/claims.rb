@@ -1,34 +1,31 @@
 # frozen_string_literal: true
 
 module GscDigitalProducts
-  class Eligibility
+  class Claims
 
     def initialize(http_client)
       @http = http_client
     end
 
     # Validate whether a GSC plan member exists with the given policy information
-    # @param [ElgibilityCheckRequest]
-    # @returns [EligibilityCheckResult]
-    def general(request)
+    # @param [ProfessionalServicesClaimRequest]
+    # @returns [ClaimResult]
+    def professional_services(request)
       res = @http.post(
-        "api/v1/Eligibility/general?subscriberIdentifier=#{request.subscriber_identifier}",
+        "api/v1/Claims/ProfessionalServices?subscriberIdentifier=#{request.subscriber_identifier}",
         {
           "dependantNumber": request.dependant_number,
+          "benefitId": request.benefit_id,
           "benefitTypeCode": request.benefit_type_code,
-          "procedureCode": request.procedure_code,
-          "serviceDate": request.service_date,
           "providerId": request.provider_id,
-          "provinceCode": request.province_code,
-          "claimAmount": request.claim_amount,
           "payeeTypeCode": request.payee_type_code,
           "accidentType": request.accident_type,
           "hasAlternateCoverage": request.has_alternate_coverage,
-          "wasSubmittedToAlternateCarrier": request.was_submitted_to_alternate_carrier
+          "wasSubmittedToAlternateCarrier": request.was_submitted_to_alternate_carrier,
+          "claimDetails": request.claim_details.collect { |detail| detail.to_gsc_parameters }
         }
       )
-
-      EligibilityCheckResult.from_response(**res[0])
+      ClaimResult.from_response(**res[0])
     end
   end
 end

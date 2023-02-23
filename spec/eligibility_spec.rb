@@ -4,11 +4,6 @@ require "rspec/expectations"
 
 describe GscDigitalProducts::Eligibility do
   before :each do
-    @auth = GscDigitalProducts::ClientCredentialAuthentication.new(
-      "https://server.ca/identity-server/connect/token",
-      "inkblot-test-user",
-      "inkblot-test-password"
-    )
     @http_client = instance_double(GscDigitalProducts::AuthenticatedHttp)
     @eligibility = GscDigitalProducts::Eligibility.new(@http_client)
   end

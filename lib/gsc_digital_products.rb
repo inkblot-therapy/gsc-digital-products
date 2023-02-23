@@ -6,9 +6,14 @@ require_relative "gsc_digital_products/errors"
 require_relative "gsc_digital_products/version"
 
 require_relative "gsc_digital_products/models/constants"
+require_relative "gsc_digital_products/models/claim_result"
+require_relative "gsc_digital_products/models/claim_result_detail"
 require_relative "gsc_digital_products/models/eligibility_check_request"
 require_relative "gsc_digital_products/models/eligibility_check_result"
+require_relative "gsc_digital_products/models/professional_services_claim_detail"
+require_relative "gsc_digital_products/models/professional_services_claim_request"
 
+require_relative "gsc_digital_products/resources/claims"
 require_relative "gsc_digital_products/resources/eligibility"
 require_relative "gsc_digital_products/resources/plan_members"
 
@@ -17,6 +22,14 @@ module GscDigitalProducts
     def initialize(digital_products_url, token_url, client_id, client_secret)
       @auth = ClientCredentialAuthentication.new(token_url, client_id, client_secret)
       @http_client = AuthenticatedHttp.new(digital_products_url, @auth)
+    end
+
+    def claims
+      @claims ||= GscDigitalProducts::Claims.new(@http_client)
+    end
+
+    def eligibility
+      @eligibility ||= GscDigitalProducts::Eligibility.new(@http_client)
     end
 
     def plan_members
