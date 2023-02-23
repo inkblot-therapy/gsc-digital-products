@@ -41,7 +41,7 @@ module GscDigitalProducts
         }
       )
       unless res.success?
-        raise UnableToAquireAccessToken.new
+        raise UnableToAquireAccessToken.new, JSON.parse(res.body)
       end
 
       response_data = JSON.parse(res.body)

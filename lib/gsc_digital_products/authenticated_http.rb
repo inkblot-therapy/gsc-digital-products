@@ -57,7 +57,8 @@ module GscDigitalProducts
     # @params [Faraday::Response] Failed Faraday response
     def throw_error_on_failure(response)
       unless response.success?
-        raise GscDigitalProductsAPIError.new(JSON.parse(response.body))
+        puts response.body
+        raise GscDigitalProductsAPIError.new response.body
       end
     end
   end
