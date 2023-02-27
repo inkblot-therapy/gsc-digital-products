@@ -21,6 +21,16 @@ module GscDigitalProducts
       @authentication = authentication
     end
 
+    def get(path, query)
+      res = @client.get(path, query) do |r|
+        r.headers["Authorization"] = "Bearer #{@authentication.token}"
+      end
+      unless res.success?
+        throw_error_on_failure(res)
+      end
+      return JSON.parse(res.body)
+    end
+
     def post(path, body)
       res = @client.post(path, body.to_json) do |r|
         r.headers["Authorization"] = "Bearer #{@authentication.token}"
