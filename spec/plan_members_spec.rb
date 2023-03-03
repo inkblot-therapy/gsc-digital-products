@@ -62,4 +62,102 @@ describe GscDigitalProducts::PlanMembers do
       ) }.to raise_error(GscDigitalProducts::GscDigitalProductsAPIError)
     end
   end
+
+  describe "#validate_and_coverage" do
+    it "should validate a plan member and no coverages" do
+      # Arrange
+      expect(@http_client).to receive(:post).with(
+        "api/v1/PlanMember/validate_and_coverage",
+        {
+          "subscriberIdentifier": "123456",
+          "dependentCode": "01",
+          "procedureCodes": nil,
+        }
+      ).and_return(
+        JSON.parse('{
+          "subscriberIdentifier": "654434",
+          "dependentNumber": "00",
+          "participantStatus": "Active",
+          "clientRefCode": "GSP-",
+          "billingDivisionNumber": 2299,
+          "isAccountOwner": true,
+          "procedureValidationResults": null
+        }')
+      )
+      # Act
+      result = @plan_members.validate_and_coverage(
+        subscriber_identifier: "123456",
+        dependent_code: "01",
+      )
+      # Assert
+      expected_result = GscDigitalProducts::ValidatePlanMemberAndCheckCoverageResponse.new(
+        subscriber_identifier: "654434",
+        dependent_number: "00",
+        participant_status: "Active",
+        procedure_validation_results: nil
+      )
+      expect(result.subscriber_identifier).to eq(expected_result.subscriber_identifier)
+      expect(result.dependent_number).to eq(expected_result.dependent_number)
+      expect(result.participant_status).to eq(expected_result.participant_status)
+    end
+
+    it "should validate a plan member and their coverages" do
+      # Arrange
+      expect(@http_client).to receive(:post).with(
+        "api/v1/PlanMember/validate_and_coverage",
+        {
+          "subscriberIdentifier": "123456",
+          "dependentCode": "01",
+          "procedureCodes": [
+            "00351", "00451", "33520"
+          ]
+        }
+      ).and_return(
+        JSON.parse('{
+          "subscriberIdentifier": "654434",
+          "dependentNumber": "00",
+          "participantStatus": "Active",
+          "clientRefCode": "GSP-",
+          "billingDivisionNumber": 2299,
+          "isAccountOwner": true,
+          "procedureValidationResults": [
+            {
+              "procedureCode": "33520",
+              "isCovered": true
+            }
+          ]
+        }')
+      )
+      # Act
+      result = @plan_members.validate_and_coverage(
+        subscriber_identifier: "123456",
+        dependent_code: "01",
+        procedure_codes: ["00351", "00451", "33520"]
+      )
+      # Assert
+      expected_result = GscDigitalProducts::ValidatePlanMemberAndCheckCoverageResponse.new(
+        subscriber_identifier: "654434",
+        dependent_number: "00",
+        participant_status: "Active",
+        procedure_validation_results: [
+          GscDigitalProducts::ProcedureValidationResult.new(
+            procedure_code: "33520",
+            is_covered: true
+          ),
+          GscDigitalProducts::ProcedureValidationResult.new(
+            procedure_code: "00351",
+            is_covered: false
+          ),
+          GscDigitalProducts::ProcedureValidationResult.new(
+            procedure_code: "00451",
+            is_covered: false
+          )
+        ]
+      )
+      expect(result.subscriber_identifier).to eq(expected_result.subscriber_identifier)
+      expect(result.dependent_number).to eq(expected_result.dependent_number)
+      expect(result.participant_status).to eq(expected_result.participant_status)
+      expect(result.procedure_validation_results.length).to eq(expected_result.procedure_validation_results.length)
+    end
+  end
 end

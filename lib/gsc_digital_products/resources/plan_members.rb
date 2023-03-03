@@ -27,5 +27,56 @@ module GscDigitalProducts
         }
       )
     end
+
+    # Validate the coverage of a GSC plan member with the given policy information
+    # @returns [ValidatePlanMemberAndCheckCoverageResponse] GSC response transformed to plain old Ruby object
+    def validate_and_coverage(
+      subscriber_identifier:,
+      dependent_code:,
+      procedure_codes: nil
+    )
+      # Validate request is valid
+      unless subscriber_identifier.is_a?(String)
+        raise ArgumentError, "subscriber_identifier must be a string"
+      end
+      unless dependent_code.is_a?(String)
+        raise ArgumentError, "dependent_code must be a string"
+      end
+      unless procedure_codes.nil? || procedure_codes.is_a?(Array)
+        raise ArgumentError, "procedure_codes must be an array of strings or nil"
+      end
+
+      res = @http.post(
+        "api/v1/PlanMember/validate_and_coverage",
+        {
+          "subscriberIdentifier": subscriber_identifier,
+          "dependentCode": dependent_code,
+          "procedureCodes": procedure_codes,
+        }
+      )
+      validation_response = ValidatePlanMemberAndCheckCoverageResponse.from_gsc_response(**res)
+
+      # Check all procedure codes in the response are in the request
+      # If not, then insert a record for the procedure code with is_covered = false
+      if procedure_codes
+        procedure_codes_returned_from_gsc = Set.new
+        if validation_response.procedure_validation_results != nil
+          procedure_codes_returned_from_gsc = validation_response.procedure_validation_results.collect{ |pc| pc.procedure_code }
+        end
+
+        procedure_codes.each do |procedure_code|
+          unless procedure_codes_returned_from_gsc.include?(procedure_code)
+            validation_response.procedure_validation_results.push(
+              ProcedureValidationResult.new(
+                procedure_code: procedure_code,
+                is_covered: false
+              )
+            )
+          end
+        end
+      end
+
+      validation_response
+    end
   end
 end
