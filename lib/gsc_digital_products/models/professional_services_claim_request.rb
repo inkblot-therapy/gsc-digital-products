@@ -53,12 +53,12 @@ module GscDigitalProducts
       end
       @claim_details =  claim_details.collect{ |detail| ProfessionalServicesClaimDetail.new(detail) }
 
-      unless PayeeTypeCode.constants.to_s.include?(payee_type_code)
+      unless PayeeTypeCode.constants.map(&:to_s).include?(payee_type_code)
         raise ArgumentError, "Invalid payee type code: #{payee_type_code}"
       end
       @payee_type_code = payee_type_code
 
-      unless AccidentType.constants.to_s.include?(accident_type)
+      unless AccidentType.constants.map(&:to_s).include?(accident_type)
         raise ArgumentError, "Invalid accident type: #{accident_type}"
       end
       @accident_type = accident_type
