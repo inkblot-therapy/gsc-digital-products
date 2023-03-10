@@ -68,7 +68,7 @@ module GscDigitalProducts
       end
       @payee_type_code = payee_type_code
 
-      unless AccidentType.constants.to_s.include?(accident_type)
+      unless AccidentType.constants.map(&:to_s).include?(accident_type)
         raise ArgumentError, "Invalid accident type: #{accident_type}"
       end
       @accident_type = accident_type
