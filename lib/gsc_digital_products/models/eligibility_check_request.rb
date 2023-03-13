@@ -53,7 +53,7 @@ module GscDigitalProducts
       end
       @provider_id = provider_id.to_i
 
-      unless ProvinceCode.constants.to_s.include?(province_code.to_s)
+      unless ProvinceCode.constants.map(&:to_s).include?(province_code.to_s)
         raise ArgumentError, "Invalid province code: #{province_code}"
       end
       @province_code = province_code
@@ -63,12 +63,12 @@ module GscDigitalProducts
       end
       @claim_amount = claim_amount
 
-      unless PayeeTypeCode.constants.to_s.include?(payee_type_code)
+      unless PayeeTypeCode.constants.map(&:to_s).include?(payee_type_code)
         raise ArgumentError, "Invalid payee type code: #{payee_type_code}"
       end
       @payee_type_code = payee_type_code
 
-      unless AccidentType.constants.to_s.include?(accident_type)
+      unless AccidentType.constants.map(&:to_s).include?(accident_type)
         raise ArgumentError, "Invalid accident type: #{accident_type}"
       end
       @accident_type = accident_type
