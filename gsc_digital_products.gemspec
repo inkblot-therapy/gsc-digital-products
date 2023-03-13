@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Ruby client for interacting with the Green Shield Canada Digital Products API"
   spec.homepage = "https://github.com/inkblot-therapy/gsc-digital-products-client"
-  spec.required_ruby_version = ">= 2.7.0"
+  spec.required_ruby_version = ">= 2.7.7"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.pkg.github.com/inkblot-therapy"
 
