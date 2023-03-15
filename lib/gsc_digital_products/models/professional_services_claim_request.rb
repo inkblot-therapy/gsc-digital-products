@@ -51,7 +51,7 @@ module GscDigitalProducts
       unless claim_details.is_a?(Array)
         raise ArgumentError, "Invalid claim details (must be array): #{claim_details}"
       end
-      @claim_details =  claim_details.collect{ |detail| ProfessionalServicesClaimDetail.new(detail) }
+      @claim_details =  claim_details.collect{ |detail| ProfessionalServicesClaimDetail.new(**detail) }
 
       unless PayeeTypeCode.constants.map(&:to_s).include?(payee_type_code)
         raise ArgumentError, "Invalid payee type code: #{payee_type_code}"
