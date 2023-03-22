@@ -67,10 +67,10 @@ describe GscDigitalProducts::PlanMembers do
     it "should validate a plan member and no coverages" do
       # Arrange
       expect(@http_client).to receive(:post).with(
-        "api/v1/PlanMember/validate_and_coverage",
+        "api/v1/PlanMember/validateAndCoverage",
         {
           "subscriberIdentifier": "123456",
-          "dependentCode": "01",
+          "dependentNumber": "01",
           "procedureCodes": nil,
         }
       ).and_return(
@@ -87,7 +87,7 @@ describe GscDigitalProducts::PlanMembers do
       # Act
       result = @plan_members.validate_and_coverage(
         subscriber_identifier: "123456",
-        dependent_code: "01",
+        dependent_number: "01",
       )
       # Assert
       expected_result = GscDigitalProducts::ValidatePlanMemberAndCheckCoverageResponse.new(
@@ -104,10 +104,10 @@ describe GscDigitalProducts::PlanMembers do
     it "should validate a plan member and their coverages" do
       # Arrange
       expect(@http_client).to receive(:post).with(
-        "api/v1/PlanMember/validate_and_coverage",
+        "api/v1/PlanMember/validateAndCoverage",
         {
           "subscriberIdentifier": "123456",
-          "dependentCode": "01",
+          "dependentNumber": "01",
           "procedureCodes": [
             "00351", "00451", "33520"
           ]
@@ -131,7 +131,7 @@ describe GscDigitalProducts::PlanMembers do
       # Act
       result = @plan_members.validate_and_coverage(
         subscriber_identifier: "123456",
-        dependent_code: "01",
+        dependent_number: "01",
         procedure_codes: ["00351", "00451", "33520"]
       )
       # Assert

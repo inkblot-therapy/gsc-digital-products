@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gsc_digital_products (0.1.4)
+    gsc_digital_products (0.1.5)
       faraday (~> 1)
       faraday_middleware (~> 1)
 

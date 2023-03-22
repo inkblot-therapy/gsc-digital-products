@@ -32,25 +32,25 @@ module GscDigitalProducts
     # @returns [ValidatePlanMemberAndCheckCoverageResponse] GSC response transformed to plain old Ruby object
     def validate_and_coverage(
       subscriber_identifier:,
-      dependent_code:,
+      dependent_number:,
       procedure_codes: nil
     )
       # Validate request is valid
       unless subscriber_identifier.is_a?(String)
         raise ArgumentError, "subscriber_identifier must be a string"
       end
-      unless dependent_code.is_a?(String)
-        raise ArgumentError, "dependent_code must be a string"
+      unless dependent_number.is_a?(String)
+        raise ArgumentError, "dependent_number must be a string"
       end
       unless procedure_codes.nil? || procedure_codes.is_a?(Array)
         raise ArgumentError, "procedure_codes must be an array of strings or nil"
       end
 
       res = @http.post(
-        "api/v1/PlanMember/validate_and_coverage",
+        "api/v1/PlanMember/validateAndCoverage",
         {
           "subscriberIdentifier": subscriber_identifier,
-          "dependentCode": dependent_code,
+          "dependentNumber": dependent_number,
           "procedureCodes": procedure_codes,
         }
       )
