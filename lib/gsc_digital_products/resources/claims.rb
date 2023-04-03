@@ -9,7 +9,7 @@ module GscDigitalProducts
 
     # Validate whether a GSC plan member exists with the given policy information
     # @param [ProfessionalServicesClaimRequest]
-    # @returns [ClaimResult]
+    # @return [ClaimResult]
     def professional_services(request)
       res = @http.post(
         "api/v1/Claims/ProfessionalServices?subscriberIdentifier=#{request.subscriber_identifier}",
@@ -20,6 +20,8 @@ module GscDigitalProducts
           "providerId": request.provider_id,
           "payeeTypeCode": request.payee_type_code,
           "accidentType": request.accident_type,
+          "accidentDate": request.accident_date,
+          "wsibCaseNumber": request.wsib_case_number&.to_i,
           "hasAlternateCoverage": request.has_alternate_coverage,
           "wasSubmittedToAlternateCarrier": request.was_submitted_to_alternate_carrier,
           "claimDetails": request.claim_details.collect { |detail| detail.to_gsc_parameters }

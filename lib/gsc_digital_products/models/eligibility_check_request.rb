@@ -44,7 +44,7 @@ module GscDigitalProducts
       @procedure_code = procedure_code
 
       unless service_date.is_a?(Date)
-        raise ArgumentError, "Invalid service date: #{service_date}"
+        raise ArgumentError, "Invalid service date (must be Date): #{service_date} (#{service_date.class})"
       end
       @service_date = service_date
 

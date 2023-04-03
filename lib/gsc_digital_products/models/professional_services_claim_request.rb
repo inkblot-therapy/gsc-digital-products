@@ -11,6 +11,8 @@ module GscDigitalProducts
       :claim_details,
       :payee_type_code,
       :accident_type,
+      :accident_date,
+      :wsib_case_number,
       :has_alternate_coverage,
       :was_submitted_to_alternate_carrier
 
@@ -23,6 +25,8 @@ module GscDigitalProducts
       claim_details:,
       payee_type_code: PayeeTypeCode::PR,
       accident_type: AccidentType::NONE,
+      accident_date: nil,
+      wsib_case_number: nil,
       has_alternate_coverage: false,
       was_submitted_to_alternate_carrier: false
     )
@@ -62,6 +66,16 @@ module GscDigitalProducts
         raise ArgumentError, "Invalid accident type: #{accident_type}"
       end
       @accident_type = accident_type
+
+      unless accident_type == AccidentType::NONE || accident_date.is_a?(Date)
+        raise ArgumentError, "If accident related, must provide accident date (must be Date type): #{accident_date}"
+      end
+      @accident_date = accident_date
+
+      unless accident_type != AccidentType::WSIB || wsib_case_number.is_a?(String)
+        raise ArgumentError, "If accident related, WSIB case number required (must be string): #{wsib_case_number}"
+      end
+      @wsib_case_number = wsib_case_number&.to_i
 
       unless [true, false].include?(has_alternate_coverage)
         raise ArgumentError, "Invalid has_alternate_coverage: #{has_alternate_coverage}"
