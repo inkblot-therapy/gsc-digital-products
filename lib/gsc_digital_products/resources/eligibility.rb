@@ -23,6 +23,7 @@ module GscDigitalProducts
           "claimAmount": request.claim_amount,
           "payeeTypeCode": request.payee_type_code,
           "accidentType": request.accident_type,
+          "lengthOfTreatment": request.length_of_treatment,
           "hasAlternateCoverage": request.has_alternate_coverage,
           "wasSubmittedToAlternateCarrier": request.was_submitted_to_alternate_carrier
         }

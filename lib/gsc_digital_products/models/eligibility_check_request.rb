@@ -13,6 +13,7 @@ module GscDigitalProducts
       :claim_amount,
       :payee_type_code,
       :accident_type,
+      :length_of_treatment,
       :has_alternate_coverage,
       :was_submitted_to_alternate_carrier
 
@@ -27,6 +28,7 @@ module GscDigitalProducts
       claim_amount:,
       payee_type_code: PayeeTypeCode::PR,
       accident_type: AccidentType::NONE,
+      length_of_treatment: nil,
       has_alternate_coverage: false,
       was_submitted_to_alternate_carrier: false
     )
@@ -72,6 +74,11 @@ module GscDigitalProducts
         raise ArgumentError, "Invalid accident type: #{accident_type}"
       end
       @accident_type = accident_type
+
+      unless length_of_treatment.nil? || length_of_treatment.is_a?(Numeric)
+        raise ArgumentError, "Invalid length of treatment. Provided: #{length_of_treatment} (#{length_of_treatment.class})"
+      end
+      @length_of_treatment = length_of_treatment
 
       unless [true, false].include?(has_alternate_coverage)
         raise ArgumentError, "Invalid has_alternate_coverage: #{has_alternate_coverage}"

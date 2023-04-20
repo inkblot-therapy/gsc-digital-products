@@ -11,7 +11,8 @@ describe GscDigitalProducts::EligibilityCheckRequest do
     @service_date = Date.new(2022, 3, 1)
     @provider_id = "12345"
     @province_code = "ON"
-    @claim_amount = 100.00
+    @claim_amount = 56.50
+    @length_of_treatment = 0.5
   end
 
   it "initializes with only required parameters passed" do
@@ -34,6 +35,7 @@ describe GscDigitalProducts::EligibilityCheckRequest do
     expect(req.provider_id).to eq(@provider_id.to_i)
     expect(req.province_code).to eq(@province_code)
     expect(req.claim_amount).to eq(@claim_amount)
+    expect(req.length_of_treatment).to eq(nil)
     expect(req.payee_type_code).to eq(GscDigitalProducts::PayeeTypeCode::PR)
     expect(req.accident_type).to eq(GscDigitalProducts::AccidentType::NONE)
     expect(req.has_alternate_coverage).to eq(false)
@@ -50,6 +52,7 @@ describe GscDigitalProducts::EligibilityCheckRequest do
       provider_id: @provider_id,
       province_code: @province_code,
       claim_amount: @claim_amount,
+      length_of_treatment: @length_of_treatment,
       payee_type_code:GscDigitalProducts::PayeeTypeCode::PR,
       accident_type: GscDigitalProducts::AccidentType::DENTAL,
       has_alternate_coverage: true,
@@ -64,6 +67,7 @@ describe GscDigitalProducts::EligibilityCheckRequest do
     expect(req.provider_id).to eq(@provider_id.to_i)
     expect(req.province_code).to eq(@province_code)
     expect(req.claim_amount).to eq(@claim_amount)
+    expect(req.length_of_treatment).to eq(@length_of_treatment)
     expect(req.payee_type_code).to eq(GscDigitalProducts::PayeeTypeCode::PR)
     expect(req.accident_type).to eq(GscDigitalProducts::AccidentType::DENTAL)
     expect(req.has_alternate_coverage).to eq(true)
@@ -82,6 +86,23 @@ describe GscDigitalProducts::EligibilityCheckRequest do
       claim_amount: @claim_amount,
       payee_type_code: GscDigitalProducts::PayeeTypeCode::PR,
       accident_type: "DENT",
+      has_alternate_coverage: true,
+      was_submitted_to_alternate_carrier: false
+    )}.to raise_error(ArgumentError)
+  end
+
+  it "fails to initialize when bad length_of_treatment is passed" do
+    expect{GscDigitalProducts::EligibilityCheckRequest.new(
+      subscriber_identifier: @subscriber_id,
+      dependant_number: @dependant_number,
+      benefit_type_code: @benefit_type_code,
+      procedure_code: @procedure_code,
+      service_date: @service_date,
+      provider_id: @provider_id,
+      province_code: @province_code,
+      claim_amount: @claim_amount,
+      length_of_treatment: "full",
+      payee_type_code: GscDigitalProducts::PayeeTypeCode::PR,
       has_alternate_coverage: true,
       was_submitted_to_alternate_carrier: false
     )}.to raise_error(ArgumentError)
