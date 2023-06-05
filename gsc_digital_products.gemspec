@@ -8,14 +8,14 @@ Gem::Specification.new do |spec|
   spec.authors = ["Inkblot Technologies"]
 
   spec.summary = "Ruby client for interacting with the Green Shield Canada Digital Products API"
-  spec.homepage = "https://github.com/inkblot-therapy/gsc-digital-products-client"
+  spec.homepage = "https://github.com/inkblot-therapy/gsc-digital-products"
   spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.pkg.github.com/inkblot-therapy"
 
-  spec.metadata["homepage_uri"] = "https://github.com/inkblot-therapy/gsc-digital-products-client"
-  spec.metadata["source_code_uri"] = "https://github.com/inkblot-therapy/gsc-digital-products-client"
-  spec.metadata["github_repo"] = "ssh://github.com/inkblot-therapy/gsc-digital-products-client"
+  spec.metadata["homepage_uri"] = "https://github.com/inkblot-therapy/gsc-digital-products"
+  spec.metadata["source_code_uri"] = "https://github.com/inkblot-therapy/gsc-digital-products"
+  spec.metadata["github_repo"] = "ssh://github.com/inkblot-therapy/gsc-digital-products"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
