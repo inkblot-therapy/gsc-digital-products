@@ -16,6 +16,20 @@ module GscDigitalProducts
       subscriber_identifier:,
       dependent_code:
     )
+      # Validate request is valid
+      unless first_name.is_a?(String) && first_name.length > 0
+        raise ArgumentError, "first_name must be a string"
+      end
+      unless last_name.is_a?(String) && last_name.length > 0
+        raise ArgumentError, "last_name must be a string"
+      end
+      unless subscriber_identifier.is_a?(String) && subscriber_identifier.length > 0
+        raise ArgumentError, "subscriber_identifier must be a string"
+      end
+      unless dependent_code.is_a?(String) && dependent_code.length == 2
+        raise ArgumentError, "dependent_number must be a string"
+      end
+
       res = @http.post(
         "api/v1/PlanMember/validate",
         {
