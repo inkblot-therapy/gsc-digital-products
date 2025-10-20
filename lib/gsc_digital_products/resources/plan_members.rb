@@ -92,5 +92,19 @@ module GscDigitalProducts
 
       validation_response
     end
+
+    def dependents(subscriber_identifier:, include_primary_dependent: false)
+      unless subscriber_identifier.is_a?(String)
+        raise ArgumentError, "subscriber_identifier must be a string"
+      end
+
+      @http.get(
+        "api/v1/PlanMember/dependents",
+        {
+          "subscriberIdentifier": subscriber_identifier,
+          "includePrimaryDependent": include_primary_dependent
+        }
+      )
+    end
   end
 end
