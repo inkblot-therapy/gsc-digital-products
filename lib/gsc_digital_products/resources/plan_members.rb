@@ -98,6 +98,10 @@ module GscDigitalProducts
         raise ArgumentError, "subscriber_identifier must be a string"
       end
 
+      unless include_primary_dependent.nil? || include_primary_dependent.is_a?(Boolean)
+        raise ArgumentError, "include_primary_dependent must be nil or a boolean"
+      end
+
       @http.get(
         "api/v1/PlanMember/dependents",
         {
